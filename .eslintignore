@@ -1,5 +1,6 @@
 .eslint*
 **/node_modules
+**/spec
 **/bower_components
 **/lib
 **/vendor
