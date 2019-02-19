@@ -6,4 +6,5 @@
 **/vendor
 **/*.min.js
 /src/BoardView.js
+/src
 test.mocha.js
