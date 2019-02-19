@@ -2,12 +2,11 @@
   "name": "n-queens",
   "version": "1.0.0",
   "description": "",
-  "main": ".eslintrc.js",
   "directories": {
     "lib": "lib"
   },
   "scripts": {
-    "test": "mocha test.mocha.js",
+    "test": "node __test__/getReview.js && mocha __test__/ --timeout 20000",
     "precommit": "lint-staged",
     "lint": "./node_modules/.bin/eslint src"
   },
@@ -30,24 +29,13 @@
     "url": "https://github.com/codestates/im07-2018-06-n-queens/issues"
   },
   "homepage": "https://github.com/codestates/im07-2018-06-n-queens#readme",
-  "dependencies": {
-    "chai": "^4.1.2",
-    "jest": "^23.5.0",
-    "jquery": "^3.3.1",
-    "jsdom": "^12.0.0",
-    "lodash": "^4.17.10",
-    "mocha": "^5.2.0",
-    "sinon": "^6.1.5"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "chai": "^4.1.2",
     "eslint": "^5.6.0",
-    "eslint-config-standard": "^12.0.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-node": "^7.0.1",
-    "eslint-plugin-promise": "^4.0.1",
-    "eslint-plugin-standard": "^4.0.0",
     "husky": "^1.0.1",
     "lint-staged": "^7.3.0",
-    "puppeteer": "^1.8.0"
+    "mocha": "^5.2.0",
+    "puppeteer": "^1.12.2"
   }
 }
