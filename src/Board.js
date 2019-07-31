@@ -43,10 +43,10 @@
 
     hasAnyQueenConflictsOn: function (rowIndex, colIndex) {
       return (
-        this.hasRowConflictAt(rowIndex) ||
-        this.hasColConflictAt(colIndex) ||
-        this.hasMajorDiagonalConflictAt(this._getFirstRowColumnIndexForMajorDiagonalOn(rowIndex, colIndex)) ||
-        this.hasMinorDiagonalConflictAt(this._getFirstRowColumnIndexForMinorDiagonalOn(rowIndex, colIndex))
+          this.hasRowConflictAt(rowIndex) ||
+          this.hasColConflictAt(colIndex) ||
+          this.hasMajorDiagonalConflictAt(this._getFirstRowColumnIndexForMajorDiagonalOn(rowIndex, colIndex)) ||
+          this.hasMinorDiagonalConflictAt(this._getFirstRowColumnIndexForMinorDiagonalOn(rowIndex, colIndex))
       )
     },
 
@@ -56,8 +56,8 @@
 
     _isInBounds: function (rowIndex, colIndex) {
       return (
-        rowIndex >= 0 && rowIndex < this.get('n') &&
-        colIndex >= 0 && colIndex < this.get('n')
+          rowIndex >= 0 && rowIndex < this.get('n') &&
+          colIndex >= 0 && colIndex < this.get('n')
       )
     },
     /* eslint-enable */
@@ -79,12 +79,28 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function (rowIndex) {
-      return false; // fixme
+      //row col rooks majorDiagonal minorDiagonal queens
+      var temp = this.get(rowIndex);
+      let count = 0;
+      for (let i = 0; i < temp.length; i++) {
+        if (temp[i] !== 0) {
+          count++;
+        }
+      }
+      if (count > 1) {
+        return true;
+      }
+      return false;
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function () {
-      return false; // fixme
+      for (let i = 0; i < this.attributes.n; i++) {
+        if (this.hasRowConflictAt(i)) {
+          return true;
+        }
+      }
+      return false;
     },
 
     // COLUMNS - run from top to bottom
