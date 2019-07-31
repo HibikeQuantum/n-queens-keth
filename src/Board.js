@@ -145,20 +145,12 @@
         return false;
       } else if (col >= 0) {
         for (let i = 0; i < this.attributes.n - col; i++) {
-          // console.log('1col:', col)
-          // console.log('1col + i:', col + i)
           temp.push(this.get(i)[col + i]);
         }
-        // console.log('col :', col)
-        // console.log('col >=0 :', temp)
       } else if (col < 0) {
         for (let i = 0; i < this.attributes.n + col; i++) {
-          // console.log('2col:', col)
-          // console.log('2col - i:', -col - i)
-          temp.push(this.get(- col + i)[i]);
+          temp.push(this.get(-col + i)[i]);
         }
-        // console.log('col :', col)
-        // console.log('col < 0 :', temp)
       }
       for (let i = 0; i < temp.length; i++) {
         if (temp[i] !== 0) {
@@ -173,7 +165,7 @@
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function () {
-      for (let i = - (this.attributes.n - 1); i < this.attributes.n; i++) {
+      for (let i = -(this.attributes.n - 1); i < this.attributes.n; i++) {
         if (this.hasMajorDiagonalConflictAt(i)) {
           return true;
         }
@@ -185,14 +177,43 @@
     // --------------------------------------------------------------
     //
     // test if a specific minor diagonal on this board contains a conflict
-    hasMinorDiagonalConflictAt: function (minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+    hasMinorDiagonalConflictAt: function (col) {
+      let temp = [];
+      let count = 0;
+      //
+      let len = this.attributes.n - 1;
+      if (col === 0 || col >= ((len) * 2)) {
+        return false;
+      } else if (col <= (len)) {
+        for (let i = 0; i < col + 1; i++) {
+          temp.push(this.get(i)[col - i]);
+        }
+      } else if (col > (len)) {
+        for (let i = 0; i < len * 2 - col + 1; i++) {
+          temp.push(this.get(Math.abs(len - col) + i)[len - i]);
+        }
+      }
+      for (let i = 0; i < temp.length; i++) {
+        if (temp[i] !== 0) {
+          count++;
+        }
+      }
+      if (count > 1) {
+        return true;
+      }
+      return false;
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function () {
-      return false; // fixme
+      for (let i = 0; i < (this.attributes.n - 1) * 2; i++) {
+        if (this.hasMinorDiagonalConflictAt(i)) {
+          return true;
+        }
+      }
+      return false;
     }
+
 
     /* --------------------  End of Helper Functions  --------------------- */
 

@@ -32,6 +32,7 @@ describe("solvers", function() {
   describe("countNRooksSolutions()", function() {
     it("finds the number of valid solutions for n of 1-8", function() {
       _.range(1, 9).map(function(n) {
+
         var solutionCount = countNRooksSolutions(n);
         var expectedSolutionCount = [1, 1, 2, 6, 24, 120, 720, 5040, 40320][n];
 
