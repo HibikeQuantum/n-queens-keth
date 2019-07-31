@@ -15,59 +15,82 @@
 window.findNRooksSolution = function (n) {
   var solution = [];
 
-  var RookTree = function(value) {
-    this.crd = value;
-    this.children = [];
-  };
+    var RookTree = function (value) {
+      this.crd = value;
+      this.children = [];
+    };
 
-  RookTree.prototype.addChild = function(child) {
-    let newNode = new RookTree(child);
-    this.children.push(newNode);
-  };
+    RookTree.prototype.addChild = function (child) {
+      let newNode = new RookTree(child);
+      this.children.push(newNode);
+    };
 
-  RookTree.prototype.addFam = function(row, n) {
-    let level = n - row;
-    for (let i = 0; i < n; i++) {
-      this.addChild([level, i]);
-    }
-    if (level !== n - 1) {
-      for (let i = 0; i < this.children.length; i++) {
-        this.children[i].addFam(row - 1, n);
+    RookTree.prototype.addFam = function (row, n) {
+      let level = n - row;
+      for (let i = 0; i < n; i++) {
+        if (i === n - 1) {
+          this.addChild([level, i]);
+          this.children = this.children.map((v) => {
+            v.dead = false;
+          })
+        } else {
+          this.addChild([level, i]);
+        }
+
+
       }
-    }
-  }
-
-  RookTree.prototype.contains = function(target) {
-    for (let i = 0; i < this.children.length; i++) {
-      if (this.children[i].value === target) {
-        return true
-      } else {
-        if (this.children[i].contains(target)) {
-          return true
+      console.log("만들어지는중")
+      if (level !== n - 1) {
+        for (let i = 0; i < this.children.length; i++) {
+          this.children[i].addFam(row - 1, n);
         }
       }
     }
-    return false;
-  };
 
-  // RookTree 생성
-  let rookTree = new RookTree(null);
-  rookTree.addFam(n, n);
+    //
+    // RookTree.prototype.contains = function (target) {
+    //
+    //
+    //   for (let i = 0; i < this.children.length; i++) {
+    //     if (this.children[i].value === target) {
+    //       return true
+    //     } else {
+    //       if (this.children[i].contains(target)) {
+    //         return true
+    //       }
+    //     }
+    //   }
+    //   return false;
+    // };
+
+    // RookTree 생성
+    let rookTree = new RookTree(null);
+    rookTree.addFam(n, n);
 
   // Rook solution 만들기
-  let row = [];
-  for (let i = 0; i < n; i++) {
-    if (rookTree.contains()) {
-      row.push();
-    }
-    solution.push(row);
-    row = [];
-  }
+  // let row = [];
+  // for (let i = 0; i < n; i++) {
+  //   if (rookTree.contains()) {
+  //     row.push(0);
+  //   } else {
+  //     row.push(1)
+  //   }
+  //   solution.push(row);
+  //   row = [];
+  // }
+  // for (let i = 0; i <) {
+  //
+  //   RookTree.contains[0,]
+  //
+  //   let used = [];
 
+  // TODO 리프단에는 dead alive 표시, find 함수에서는 확인하고 탐색, 안되면 옆 컬럼으로 find를 돌리는 로직.
+}
 
-  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
-  return solution;
-};
+console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
+return solution;
+}
+;
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function (n) {

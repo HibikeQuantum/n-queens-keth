@@ -79,6 +79,7 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function (rowIndex) {
+      console.log(this)
       //row col rooks majorDiagonal minorDiagonal queens
       var temp = this.get(rowIndex);
       let count = 0;
