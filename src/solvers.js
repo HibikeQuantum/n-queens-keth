@@ -13,7 +13,57 @@
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
 
 window.findNRooksSolution = function (n) {
-  var solution = undefined; // fixme
+  var solution = [];
+
+  var RookTree = function(value) {
+    this.crd = value;
+    this.children = [];
+  };
+
+  RookTree.prototype.addChild = function(child) {
+    let newNode = new RookTree(child);
+    this.children.push(newNode);
+  };
+
+  RookTree.prototype.addFam = function(row, n) {
+    let level = n - row;
+    for (let i = 0; i < n; i++) {
+      this.addChild([level, i]);
+    }
+    if (level !== n - 1) {
+      for (let i = 0; i < this.children.length; i++) {
+        this.children[i].addFam(row - 1, n);
+      }
+    }
+  }
+
+  RookTree.prototype.contains = function(target) {
+    for (let i = 0; i < this.children.length; i++) {
+      if (this.children[i].value === target) {
+        return true
+      } else {
+        if (this.children[i].contains(target)) {
+          return true
+        }
+      }
+    }
+    return false;
+  };
+
+  // RookTree 생성
+  let rookTree = new RookTree(null);
+  rookTree.addFam(n, n);
+
+  // Rook solution 만들기
+  let row = [];
+  for (let i = 0; i < n; i++) {
+    if (rookTree.contains()) {
+      row.push();
+    }
+    solution.push(row);
+    row = [];
+  }
+
 
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;
