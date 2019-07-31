@@ -138,13 +138,47 @@
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
-    hasMajorDiagonalConflictAt: function (majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+    hasMajorDiagonalConflictAt: function (col) {
+      let temp = [];
+      let count = 0;
+      if (Math.abs(col) >= this.attributes.n - 1) {
+        return false;
+      } else if (col >= 0) {
+        for (let i = 0; i < this.attributes.n - col; i++) {
+          // console.log('1col:', col)
+          // console.log('1col + i:', col + i)
+          temp.push(this.get(i)[col + i]);
+        }
+        // console.log('col :', col)
+        // console.log('col >=0 :', temp)
+      } else if (col < 0) {
+        for (let i = 0; i < this.attributes.n + col; i++) {
+          // console.log('2col:', col)
+          // console.log('2col - i:', -col - i)
+          temp.push(this.get(- col + i)[i]);
+        }
+        // console.log('col :', col)
+        // console.log('col < 0 :', temp)
+      }
+      for (let i = 0; i < temp.length; i++) {
+        if (temp[i] !== 0) {
+          count++;
+        }
+      }
+      if (count > 1) {
+        return true;
+      }
+      return false;
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function () {
-      return false; // fixme
+      for (let i = - (this.attributes.n - 1); i < this.attributes.n; i++) {
+        if (this.hasMajorDiagonalConflictAt(i)) {
+          return true;
+        }
+      }
+      return false;
     },
 
     // Minor Diagonals - go from top-right to bottom-left
