@@ -179,7 +179,7 @@ window.findNQueensSolution = function (n) {
       board.togglePiece(row, col);
     }
 
-    if (board.hasAnyMajorDiagonalConflicts() || board.hasAnyMinorDiagonalConflicts() || board.hasAnyColConflicts()) {
+    if (board.hasAnyQueensConflicts()|| board.hasAnyColConflicts()) {
 
     } else {
       solution = board.rows();
