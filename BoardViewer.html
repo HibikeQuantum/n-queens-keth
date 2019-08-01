@@ -50,6 +50,14 @@
         findNQueensSolution(n);
         countNQueensSolutions(n);
       });
+
+      window.displayBoard = function(matrix){
+        $('body').html(
+                new BoardView({
+                  model: new Board(matrix)
+                }).render()
+        );
+      };
     </script>
   </body>
 </html>

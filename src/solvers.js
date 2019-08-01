@@ -15,80 +15,89 @@
 window.findNRooksSolution = function (n) {
   var solution = [];
 
-    var RookTree = function (value) {
-      this.crd = value;
-      this.children = [];
-    };
+  var RookTree = function (value) {
+    this.crd = value;
+    this.children = [];
+  };
 
-    RookTree.prototype.addChild = function (child) {
-      let newNode = new RookTree(child);
-      this.children.push(newNode);
-    };
-
-    RookTree.prototype.addFam = function (row, n) {
-      let level = n - row;
-      for (let i = 0; i < n; i++) {
+  RookTree.prototype.addChild = function (child) {
+    let newNode = new RookTree(child);
+    this.children.push(newNode);
+  };
+  // 0 0
+  RookTree.prototype.addFam = function (row, n) {
+    let level = n - row;
+    for (let i = 0; i < n; i++) {
+      if () {
         if (i === n - 1) {
-          this.addChild([level, i]);
-          this.children = this.children.map((v) => {
-            v.dead = false;
-          })
+          this.addChild(this.crd.concat(level, i));
         } else {
-          this.addChild([level, i]);
-        }
-
-
-      }
-      console.log("만들어지는중")
-      if (level !== n - 1) {
-        for (let i = 0; i < this.children.length; i++) {
-          this.children[i].addFam(row - 1, n);
+          this.addChild(this.crd.concat(level, i));
         }
       }
     }
 
-    //
-    // RookTree.prototype.contains = function (target) {
-    //
-    //
-    //   for (let i = 0; i < this.children.length; i++) {
-    //     if (this.children[i].value === target) {
-    //       return true
-    //     } else {
-    //       if (this.children[i].contains(target)) {
-    //         return true
-    //       }
-    //     }
-    //   }
-    //   return false;
-    // };
+    if (level !== n - 1) {
+      for (let i = 0; i < this.children.length; i++) {
+        this.children[i].addFam(row - 1, n);
+      }
+    }
+  }
 
-    // RookTree 생성
-    let rookTree = new RookTree(null);
-    rookTree.addFam(n, n);
+  RookTree.prototype.getLeaf = function () {
+    let result = [];
 
-  // Rook solution 만들기
-  // let row = [];
-  // for (let i = 0; i < n; i++) {
-  //   if (rookTree.contains()) {
-  //     row.push(0);
-  //   } else {
-  //     row.push(1)
-  //   }
-  //   solution.push(row);
-  //   row = [];
-  // }
-  // for (let i = 0; i <) {
-  //
-  //   RookTree.contains[0,]
-  //
-  //   let used = [];
+    function inGetLeaf(target) {
+      if (target.children.length !== 0 || target.crd.length === 0) {
+        for (let i = 0; i < target.children.length; i++) {
+          let temp = inGetLeaf(target.children[i])
+          if (temp !== undefined) {
+            result.push(temp);
+          }
+        }
+      } else {
+        return target.crd;
+      }
+    }
 
-  // TODO 리프단에는 dead alive 표시, find 함수에서는 확인하고 탐색, 안되면 옆 컬럼으로 find를 돌리는 로직.
-}
+    inGetLeaf(this);
+    return result;
+  };
 
-console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
-return solution;
+  let rookTree = new RookTree([]);
+  rookTree.addFam(6, 6);
+  let final = rookTree.getLeaf();
+  console.log("끝");
+
+
+// Rook solution 만들기
+// let row = [];
+// for (let i = 0; i < n; i++) {
+//   if (rookTree.contains()) {
+//     row.push(0);
+//   } else {
+//     row.push(1)
+//   }
+//   solution.push(row);
+//   row = [];
+// }
+// for (let i = 0; i <) {
+//
+//   RookTree.contains[0,]
+//
+//   let used = [];
+
+// TODO 리프단에는 dead alive 표시, 안되면 옆 컬럼으로 find를 돌리는 로직 => 아니 그냥 모두 리프단을 만나면 그걸 리턴하고 looks 검증
+// TODO 계승값 프로퍼티로 경로표시 push 말고 ,set 이용해서 보드 모델 활용
+// TODO findLeaf => 짝홀 로직을 통과한 로직의 리프의 crd 값을 배열구조에 담는다. => 결과물 배열 길이는 곧 count 가 되고 result[0]
+
+  var board = new Board({n: 3})
+  board.set(1, [0, 0, 0, 1], 0);
+  board.get(0);
+  console.log(board);
+
+  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
+  return solution;
 }
 ;
 
