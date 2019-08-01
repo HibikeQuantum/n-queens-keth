@@ -158,8 +158,8 @@ window.countNRooksSolutions = function (n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function (n) {
-  if (n === 0){
-    return 0;
+  if (n === 0) {
+    return [];
   }
 
   let rookTree = new RookTree([]);
@@ -167,46 +167,54 @@ window.findNQueensSolution = function (n) {
 
   let leafs = rookTree.getLeaf();
 
-  let newLeafs = [];
-  let boolean = true;
+  for (let j = 0; j < leafs.length; j++) {
+    var board = new Board({n: n});
+    var solution = undefined;
+    let myArr = leafs[j];
 
-  for (let i = 0; i < leafs.length; i++) {
-    for (let k = 1; k < leafs[i].length; k += 2) {
-      let curCol = leafs[i][k];
-      if (curCol + 1 === leafs[i][k + 2] || curCol - 1 === leafs[i][k + 2]) {
-        boolean = false;
-      }
+    for (let i = 0; i < myArr.length; i += 2) {
+
+      let row = myArr[i];
+      let col = myArr[i + 1];
+      board.togglePiece(row, col);
     }
-    if (boolean) {
-      newLeafs.push(leafs[i])
+
+    if (board.hasAnyMajorDiagonalConflicts() || board.hasAnyMinorDiagonalConflicts() || board.hasAnyColConflicts()) {
+
+    } else {
+      solution = board.rows();
+      return solution;
     }
-    boolean = true;
   }
-  let board = new Board({n: n});
-
-  let myArr = newLeafs[0];
-  for (let i = 0; i < myArr.length; i += 2) {
-    let row = myArr[i];
-    let col = myArr[i + 1];
-    board.togglePiece(row, col)
-  }
-
-  let solution = board.rows();
-  console.log("emem",solution);
-  // expect(solutionBoard.get("n")).to.equal(n);
-  // expect(numPieces).to.equal(n);
-
-  // TODO 대각선 / \ 도 잡는 newAddFam구현
-  // TODO leafs 를 돌리면서 맥스값을 반환;
-
-  console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
-  return solution;
+  var emptyBoard = new Board({n: n});
+  return emptyBoard.rows();
 };
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function (n) {
-  var solutionCount = undefined; // fixme
 
-  // console.log('Number of solutions for ' + n + ' queens:', solutionCount);
-  return solutionCount;
+  let rookTree = new RookTree([]);
+  rookTree.addFam(n, n);
+
+  let leafs = rookTree.getLeaf();
+  let count = 0;
+  for (let j = 0; j < leafs.length; j++) {
+    var board = new Board({n: n});
+    var solution = undefined;
+    let myArr = leafs[j];
+
+    for (let i = 0; i < myArr.length; i += 2) {
+      let row = myArr[i];
+      let col = myArr[i + 1];
+      board.togglePiece(row, col);
+    }
+
+    if (board.hasAnyMajorDiagonalConflicts() || board.hasAnyMinorDiagonalConflicts() || board.hasAnyColConflicts()) {
+
+    } else {
+      count ++;
+    }
+  }
+  if (n===0){count=1;}
+  return count;
 };
