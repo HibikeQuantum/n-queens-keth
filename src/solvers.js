@@ -32,6 +32,7 @@ window.findNRooksSolution = function (n) {
           this.addChild([level, i]);
           this.children = this.children.map((v) => {
             v.dead = false;
+            return v;
           })
         } else {
           this.addChild([level, i]);
@@ -85,12 +86,10 @@ window.findNRooksSolution = function (n) {
   //   let used = [];
 
   // TODO 리프단에는 dead alive 표시, find 함수에서는 확인하고 탐색, 안되면 옆 컬럼으로 find를 돌리는 로직.
-}
 
 console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
 return solution;
-}
-;
+};
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function (n) {
