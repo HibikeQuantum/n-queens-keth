@@ -55,6 +55,54 @@ RookTree.prototype.addFam = function (row, n) {
   }
 };
 
+RookTree.prototype.newAddFam = function(row, n) {
+  let level = n - row;
+  let usable = [];
+  let usableSec = [];
+  if (this.crd.length === 0) {
+    for (let i = 0; i < n; i++) {
+      usable.push(i);
+    }
+  } else {
+    for (let value of this.usable) {
+      usable.push(value)
+    }
+  }
+  if (this.crd.length > 0) {
+    let temp = this.crd.slice(-1);
+    usable.splice(usable.indexOf(temp[0]), 1);
+  }
+  // usable [1, 2] crd [0, 0] usableSec = [0, 2]
+  let tempSec = Number(this.crd.slice(-1));
+  console.log('usable:', usable)
+  if (this.crd.length === 0) {
+    for (let i = 0; i < n; i++) {
+      usableSec.push(usable[i]);
+    }
+  } else {
+    for (let i in usable) {
+      if (usable[i] !== tempSec + 1 && usable[i] !== tempSec - 1) {
+        usableSec.push(usable[i])
+      }
+    }
+  }
+
+  console.log('usableSec', usableSec)
+  for (let value of usableSec) {
+    if (value === n - 1) {
+      this.addChild(this.crd.concat(level, value), usable);
+    } else {
+      this.addChild(this.crd.concat(level, value), usable);
+    }
+  }
+
+  if (level !== n - 1) {
+    for (let i = 0; i < this.children.length; i++) {
+        this.children[i].newAddFam(row - 1, n);
+    }
+  }
+};
+
 RookTree.prototype.getLeaf = function () {
   let result = [];
 
@@ -74,6 +122,30 @@ RookTree.prototype.getLeaf = function () {
   inGetLeaf(this);
   return result;
 };
+
+let rookTree = new RookTree([]);
+  rookTree.addFam(4, 4);
+
+  let leafs = rookTree.getLeaf();
+
+let newLeafs = {};
+let boolen = true;
+for (let i = 0; i < leafs.length; i++) {
+  for (let k = 1; k < leafs[i]; k += 2) {
+    if (leaf[i][k] + 1 === leafs[i][k + 2] || leaf[i][k] - 1 === leafs[i][k + 2]) {
+      boolen = false;
+    }
+  }
+  if (boolen) {
+    newLeafs['lenght'] = 
+    newLeafs.push(leafs[i]);
+  }
+  boolen = true;
+}
+
+
+
+
 
 window.findNRooksSolution = function (n) {
 
