@@ -6,7 +6,7 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "node __test__/getReview.js && mocha __test__/ --timeout 100000",
+    "test": "node __test__/getReview.js && mocha __test__/ --timeout 20000",
     "precommit": "lint-staged",
     "lint": "./node_modules/.bin/eslint src"
   },
@@ -36,6 +36,6 @@
     "husky": "^1.0.1",
     "lint-staged": "^7.3.0",
     "mocha": "^5.2.0",
-    "puppeteer": "^1.12.2"
+    "puppeteer": "1.11.0"
   }
 }
