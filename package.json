@@ -6,7 +6,7 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "node __test__/getReview.js && mocha __test__/ --timeout 20000",
+    "test": "node __test__/getReview.js && mocha __test__/ --timeout 100000",
     "precommit": "lint-staged",
     "lint": "./node_modules/.bin/eslint src"
   },
