@@ -22,7 +22,7 @@ RookTree.prototype.addChild = function (child, n) {
   let newNode = new RookTree(child, n);
   this.children.push(newNode);
 };
-// 3 3
+
 RookTree.prototype.addFam = function (row, n) {
   let level = n - row;
   let usable = [];
@@ -55,7 +55,7 @@ RookTree.prototype.addFam = function (row, n) {
   }
 };
 
-RookTree.prototype.newAddFam = function(row, n) {
+RookTree.prototype.newAddFam = function (row, n) {
   let level = n - row;
   let usable = [];
   let usableSec = [];
@@ -74,7 +74,6 @@ RookTree.prototype.newAddFam = function(row, n) {
   }
   // usable [1, 2] crd [0, 0] usableSec = [0, 2]
   let tempSec = Number(this.crd.slice(-1));
-  console.log('usable:', usable)
   if (this.crd.length === 0) {
     for (let i = 0; i < n; i++) {
       usableSec.push(usable[i]);
@@ -87,7 +86,6 @@ RookTree.prototype.newAddFam = function(row, n) {
     }
   }
 
-  console.log('usableSec', usableSec)
   for (let value of usableSec) {
     if (value === n - 1) {
       this.addChild(this.crd.concat(level, value), usable);
@@ -98,7 +96,7 @@ RookTree.prototype.newAddFam = function(row, n) {
 
   if (level !== n - 1) {
     for (let i = 0; i < this.children.length; i++) {
-        this.children[i].newAddFam(row - 1, n);
+      this.children[i].newAddFam(row - 1, n);
     }
   }
 };
@@ -123,28 +121,7 @@ RookTree.prototype.getLeaf = function () {
   return result;
 };
 
-let rookTree = new RookTree([]);
-  rookTree.addFam(4, 4);
-
-  let leafs = rookTree.getLeaf();
-
-let newLeafs = {};
-let boolen = true;
-for (let i = 0; i < leafs.length; i++) {
-  for (let k = 1; k < leafs[i]; k += 2) {
-    if (leaf[i][k] + 1 === leafs[i][k + 2] || leaf[i][k] - 1 === leafs[i][k + 2]) {
-      boolen = false;
-    }
-  }
-  if (boolen) {
-    newLeafs['lenght'] = 
-    newLeafs.push(leafs[i]);
-  }
-  boolen = true;
-}
-
-
-
+// newLeafs
 
 
 window.findNRooksSolution = function (n) {
@@ -163,7 +140,6 @@ window.findNRooksSolution = function (n) {
   }
 
   let solution = board.rows();
-  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
 
   return solution;
 };
@@ -182,8 +158,43 @@ window.countNRooksSolutions = function (n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function (n) {
-  var solution = undefined; // fixme
-  
+  if (n === 0){
+    return 0;
+  }
+
+  let rookTree = new RookTree([]);
+  rookTree.addFam(n, n);
+
+  let leafs = rookTree.getLeaf();
+
+  let newLeafs = [];
+  let boolean = true;
+
+  for (let i = 0; i < leafs.length; i++) {
+    for (let k = 1; k < leafs[i].length; k += 2) {
+      let curCol = leafs[i][k];
+      if (curCol + 1 === leafs[i][k + 2] || curCol - 1 === leafs[i][k + 2]) {
+        boolean = false;
+      }
+    }
+    if (boolean) {
+      newLeafs.push(leafs[i])
+    }
+    boolean = true;
+  }
+  let board = new Board({n: n});
+
+  let myArr = newLeafs[0];
+  for (let i = 0; i < myArr.length; i += 2) {
+    let row = myArr[i];
+    let col = myArr[i + 1];
+    board.togglePiece(row, col)
+  }
+
+  let solution = board.rows();
+  console.log("emem",solution);
+  // expect(solutionBoard.get("n")).to.equal(n);
+  // expect(numPieces).to.equal(n);
 
   // TODO 대각선 / \ 도 잡는 newAddFam구현
   // TODO leafs 를 돌리면서 맥스값을 반환;
@@ -196,6 +207,6 @@ window.findNQueensSolution = function (n) {
 window.countNQueensSolutions = function (n) {
   var solutionCount = undefined; // fixme
 
-  console.log('Number of solutions for ' + n + ' queens:', solutionCount);
+  // console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
 };
